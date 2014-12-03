@@ -1,0 +1,35 @@
+<!-- <html> -->
+<!--   <head> -->
+<!--     <title>Demo: Explicit render of a embedded post</title> -->
+<!--     <link rel="canonical" href="http://www.example.com" /> -->
+<!--     <script src="https://apis.google.com/js/platform.js?publisherid=102756237423986139099" async defer> -->
+<!--     </script> -->
+<!--     <script> -->
+<!--       function renderWidget() { -->
+<!--       gapi.post.render("widget-div", {'href' : 'https://plus.google.com/102756237423986139099/posts/bViv4R6w62y'} ); -->
+<!-- 	  <\!-- console.log(gapi.post.go()); -\-> -->
+<!--       } -->
+<!--     </script> -->
+<!--   </head> -->
+<!--   <body> -->
+<!--     <a href="#" onClick="renderWidget();">Render the embedded post</a> -->
+<!--     <div id="widget-div"></div> -->
+<!--   </body> -->
+<!-- </html> -->
+
+
+<html>
+      <head>
+        <title>Plus Posts</title>
+		<link rel="stylesheet" type="text/css" href="googlewidget.css" media="screen" />
+      </head>
+      <body>
+
+        <div id="posts"></div>
+
+       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="googlewidget.js"></script>
+		<!-- <script src="https://apis.google.com/js/platform.js" async defer> -->
+
+      </body>
+    </html>
