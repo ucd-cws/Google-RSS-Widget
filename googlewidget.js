@@ -1,8 +1,3 @@
-
-//http://stackoverflow.com/questions/23335060/how-to-display-activity-feed-of-my-google-plus-page-in-my-website
-//Credits to above source
-
-
 (function($) {
 
 	$.fn.googlewidget = function(options) {
@@ -11,7 +6,7 @@
 			'apikey' : '',
 			'plusid' : '',
 			'maxresults' : 10,
-			'height' : '200px'
+			'height' : 350
 		};
 
 		if(options) {
@@ -21,7 +16,7 @@
 
 		return this.each(function() {
 			var widget = this;
-			widget.css({'height', config.height});
+			$(widget).css({ 'height' : config.height + 'px' });
 			startwidget(widget, config.apikey, config.plusid, config.maxresults);
 		});
 	}
@@ -33,8 +28,9 @@ function startwidget(mydiv, apikey, plusid, maxresults){
 
 	var script = document.createElement('script');
 	script.type = 'text/javascript';
-	//the onload=invokegoogleapi is hardcoded into the src so the js parser doesnt parse the
-	//callback function
+	/** the onload=invokegoogleapi is hardcoded into the src 
+	    so the js parser doesnt parse the callback function
+	**/
 	script.src = 'https://plus.google.com/js/client:plusone.js?onload=invokegoogleapi';
 	script.async = true;
 	//script.onload doesnt work because the below gets parsed before the script.src gets evaled
