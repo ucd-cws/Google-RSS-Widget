@@ -1,7 +1,6 @@
 
 //http://stackoverflow.com/questions/23335060/how-to-display-activity-feed-of-my-google-plus-page-in-my-website
-//changed the code (slightly) from the one obtained above
-//remember to enable Google+ API, maybe contacts in the google developer API console 
+//Credits to above source
 
 
 (function($) {
@@ -11,7 +10,8 @@
 		var config = {
 			'apikey' : '',
 			'plusid' : '',
-			'maxresults' : 10
+			'maxresults' : 10,
+			'height' : '200px'
 		};
 
 		if(options) {
@@ -21,6 +21,7 @@
 
 		return this.each(function() {
 			var widget = this;
+			widget.css({'height', config.height});
 			startwidget(widget, config.apikey, config.plusid, config.maxresults);
 		});
 	}
@@ -68,12 +69,3 @@ function startwidget(mydiv, apikey, plusid, maxresults){
 
 }
 
-
-$(document).ready(function() {
-
-	var plusId = '102756237423986139099';
-	var apiKey = 'AIzaSyA9d1zhQhAaSSB_HuOaClrELgWhMaP7B1k';
-
-	$("#posts").googlewidget({'apikey':apiKey, 'plusid':plusId});
-
-});
