@@ -32,7 +32,8 @@ $(document).ready(function() {
 
 ```
 
-# Credits
+## Credits
 
 [Google for their API](https://www.google.com)
-[This stackoverflow.com post](http://stackoverflow.com/questions/23335060/how-to-display-activity-feed-of-my-google-plus-page-in-my-website)
+
+[This Stack Overflow post](http://stackoverflow.com/questions/23335060/how-to-display-activity-feed-of-my-google-plus-page-in-my-website)
