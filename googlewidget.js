@@ -3,80 +3,77 @@
 //changed the code (slightly) from the one obtained above
 //remember to enable Google+ API, maybe contacts in the google developer API console 
 
-var plusId = '102756237423986139099';
-var apiKey = 'AIzaSyA9d1zhQhAaSSB_HuOaClrELgWhMaP7B1k';
 
-function start(){
-    gapi.client.setApiKey( apiKey );
-    gapi.client.load('plus','v1').then(function(){
-        console.log('loaded');
-        gapi.client.plus.activities.list({
-            userId: plusId,
-		    collection: 'public',
-            maxResults: 10
-        }).execute(function(resp){
-		    console.log('in execute');
-            if( resp && resp.items && resp.items.length > 0 ){
-                for( var co=0; co<resp.items.length; co++ ){
-                    //$('#posts').append('<div class="post"><div id="posts-'+co+'"></div></div>');
-                    //var url = resp.items[co].object.url;
-                    //gapi.post.render('posts-'+co, {url:url});
+(function($) {
 
+	$.fn.googlewidget = function(options) {
 
-                    $('#posts').append('<div class="post"><div class="date"></div><div id="posts-'+co+'"></div></div>');
-					// var datez = $("<div>", {class: "date", text: });
-					// $('#posts-' + co).prepend(datez);
-					// console.log(resp.items[co].published);
-					$('#posts-' + co).siblings(".date").text( (resp.items[co].published).match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/) );
-					$('#posts-' + co).text(resp.items[co].object.content);
+		var config = {
+			'apikey' : '',
+			'plusid' : '',
+			'maxresults' : 10
+		};
 
-                }
-            } 
-			else {
-                console.log('invalid resp', resp);
-            }
+		if(options) {
+			//compare objects and then apply new changes
+			$.extend(config, options);
+		}
+
+		return this.each(function() {
+			var widget = this;
+			startwidget(widget, config.apikey, config.plusid, config.maxresults);
 		});
-
-    });
-
-}
-
-function speed_test(data) {
-	for(var i = 0; i < data.items.length; i++) {
-        $('#posts').append('<div class="post"><div class="date"></div><div id="posts-'+i+'"></div></div>');
-		$('#posts-' + i).siblings(".date").text( convertRFC3339(data.items[i].published));
-		$('#posts-' + i).text(data.items[i].object.content);
 	}
-}
 
-function convertRFC3339(rfc3339time) { //converts into GMT Pacific Standard Time
-	var date = new Date(Date.parse(rfc3339time));
-	var mytime = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-	return mytime;
+}(jQuery));
+
+
+function startwidget(mydiv, apikey, plusid, maxresults){
+
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	//the onload=invokegoogleapi is hardcoded into the src so the js parser doesnt parse the
+	//callback function
+	script.src = 'https://plus.google.com/js/client:plusone.js?onload=invokegoogleapi';
+	script.async = true;
+	//script.onload doesnt work because the below gets parsed before the script.src gets evaled
+	//the below variable is global
+	invokegoogleapi = function() {
+		gapi.client.setApiKey( apikey );
+		gapi.client.load('plus','v1').then(function(){
+			console.log('loaded');
+			gapi.client.plus.activities.list({
+				userId: plusid,
+				collection: 'public',
+				maxResults: maxresults
+			}).execute(function(resp){
+				console.log('in execute');
+				if( resp && resp.items){
+					for( var i = 0; i < resp.items.length; i++ ){
+						$(mydiv).append('<div class="post"><div id="posts-'+i+'"></div></div>');
+						var url = resp.items[i].object.url;
+						gapi.post.render('posts-'+i, {url:url}); 
+					}
+				} 
+				else {
+					console.log('invalid resp', resp);
+				}
+			});
+
+		});
+	};
+	var p = document.getElementsByTagName('script')[0]
+	p.parentNode.insertBefore(script, p);
+	eval(script); // oddly, we need to evaluate the script..
+
 }
 
 
 $(document).ready(function() {
 
-    // var po = document.createElement( 'script' );
-    // po.type = 'text/javascript';
-    // po.async = true;
-    // po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
-    // var s = document.getElementsByTagName( 'script' )[0];
-    // s.parentNode.insertBefore( po, s );
+	var plusId = '102756237423986139099';
+	var apiKey = 'AIzaSyA9d1zhQhAaSSB_HuOaClrELgWhMaP7B1k';
 
-	var json = get_url_json("https://content.googleapis.com/plus/v1/people/102756237423986139099/activities/public?maxResults=10&key=AIzaSyA9d1zhQhAaSSB_HuOaClrELgWhMaP7B1k");
-	console.log(json);
-	speed_test(json);
+	$("#posts").googlewidget({'apikey':apiKey, 'plusid':plusId});
+
 });
-
-function get_url_json(url) {
-	var jsondata = $.ajax({
-		type: 'GET',
-		cache: false,
-		url: url,
-		dataType: 'json',
-		async:false,
-	});
-	return jQuery.parseJSON(jsondata.responseText);
-}

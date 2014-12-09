@@ -2,22 +2,10 @@
 	height: 300px
 	width: 200px;
 	background-color: #FFFFFF;
-	border: solid #EEEEEE 1px;
-	padding: 5px 5px;
-	margin: 5px 2px;
-	text-align: center;
-	font-family: arial, sans-serif;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-}
-
-.date {
-	text-align: left;
-	color: #858378;
 }
 
 #posts {
-	width: 300px;
+	width: 450px;
 	height: 300px;
 	overflow-y: auto;
 	background-color: #CCCCCC;
