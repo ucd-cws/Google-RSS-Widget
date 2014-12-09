@@ -1,13 +1,12 @@
-.post {
-	height: 300px
-	width: 200px;
-	background-color: #FFFFFF;
-}
-
 #posts {
-	width: 470px;
+	text-align: center;
+	width: 450px;
 	height: 300px;
 	overflow-y: auto;
 	background-color: #CCCCCC;
 }
 
+.post {
+	display: block;
+	padding: 4px 0px;
+}
