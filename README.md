@@ -1,17 +1,22 @@
 # Google RSS Widget
 
-## Usage
+Converts an specified div in html into a simple Google Plus RSS feed. 
 
-```
-#In the html file
+## Configuration
+
+Create a div in the html file
+
+```html
 
 <div id="posts"></div>
 
-<script>
+```
+
+```javascript
+$(document).ready(function() {
 
 $("#posts").googlewidget({apikey:"insert_api_key", plusid: "google_plus_id"});
 
-</script>
-
+});
 
 ```
