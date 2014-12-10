@@ -30,30 +30,31 @@ function startwidget(mydiv, apikey, plusid, maxresults){
 	script.type = 'text/javascript';
 	/** the onload=invokegoogleapi is hardcoded into the src 
 	    so the js parser doesnt parse the callback function
+		and complains that gapi is not yet defined
 	**/
 	script.src = 'https://plus.google.com/js/client:plusone.js?onload=invokegoogleapi';
 	script.async = true;
-	//script.onload doesnt work because the below gets parsed before the script.src gets evaled
-	//the below variable is global
+	//script.onload doesnt work because the below gets parsed before the script.src gets executed
+	//invokegoogleapi is a global variable
 	invokegoogleapi = function() {
 		gapi.client.setApiKey( apikey );
 		gapi.client.load('plus','v1').then(function(){
-			console.log('loaded');
+			//set up get request on the google plus json file
 			gapi.client.plus.activities.list({
 				userId: plusid,
 				collection: 'public',
 				maxResults: maxresults
-			}).execute(function(resp){
-				console.log('in execute');
-				if( resp && resp.items){
-					for( var i = 0; i < resp.items.length; i++ ){
+			}).execute(function(jsondata){
+				//execute the get request, cycle through json data and find each posts's url to render
+				if( jsondata && jsondata.items){
+					for( var i = 0; i < jsondata.items.length; i++ ){
 						$(mydiv).append('<div class="post"><div id="posts-'+i+'"></div></div>');
-						var url = resp.items[i].object.url;
+						var url = jsondata.items[i].object.url;
 						gapi.post.render('posts-'+i, {url:url}); 
 					}
 				} 
 				else {
-					console.log('invalid resp', resp);
+					console.log('Unable to render the posts', jsondata);
 				}
 			});
 
@@ -61,7 +62,5 @@ function startwidget(mydiv, apikey, plusid, maxresults){
 	};
 	var p = document.getElementsByTagName('script')[0]
 	p.parentNode.insertBefore(script, p);
-	eval(script); // oddly, we need to evaluate the script..
-
 }
 
